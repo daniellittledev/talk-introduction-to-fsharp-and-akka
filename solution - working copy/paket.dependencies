@@ -1,0 +1,25 @@
+framework: auto-detect
+redirects: on
+source https://www.nuget.org/api/v2
+
+nuget FSharp.Core 4.0
+
+nuget Serilog
+nuget Serilog.Sinks.Seq
+nuget Serilog.Sinks.ColoredConsole
+
+nuget Akka
+nuget Akka.FSharp
+nuget FsPickler 2.4.0
+
+nuget FSharp.Data
+nuget FSharp.Data.Toolbox.Twitter
+
+nuget WindowsNotifications
+
+
+group Build
+    redirects: off
+    source https://nuget.org/api/v2
+
+    nuget FAKE

@@ -1,0 +1,13 @@
+FSharp.Core
+
+Serilog
+Serilog.Sinks.Seq
+Serilog.Sinks.ColoredConsole
+
+Akka
+Akka.FSharp
+
+FSharp.Data
+FSharp.Data.Toolbox.Twitter
+
+WindowsNotifications

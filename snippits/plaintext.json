@@ -1,0 +1,13 @@
+{
+	"Paket template": {
+		"prefix": "talk",
+		"body": [
+			"type project",
+			"licenseUrl http://opensource.org/licenses/MIT",
+			"Authors Daniel Little",
+			"Version 0.0.1",
+			"id ${1:Package Name}"
+		],
+		"description": "Create paket template"
+	}	
+}

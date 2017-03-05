@@ -1,0 +1,55 @@
+{
+	"Add paket setup": {
+		"prefix": "talk",
+		"body": [
+			"framework: auto-detect\r",
+			"redirects: on\r",
+			"source https://www.nuget.org/api/v2"
+		],
+		"description": "Add Paket Setup"
+	},
+	"Add Paket Build Group": {
+		"prefix": "talk",
+		"body": [
+			"group Build\r",
+			"    redirects: off\r",
+			"    source https://nuget.org/api/v2"
+		],
+		"description": "Add Paket Build Group"
+	},
+	"All Paket Dependencies": {
+		"prefix": "talk",
+		"body": [
+			"framework: auto-detect\r",
+			"redirects: on\r",
+			"source https://www.nuget.org/api/v2\r",
+			"\r",
+			"nuget FSharp.Core\r",
+			"\r",
+			"nuget Serilog\r",
+			"nuget Serilog.Sinks.Seq\r",
+			"nuget Serilog.Sinks.ColoredConsole\r",
+			"\r",
+			"nuget Akka\r",
+			"nuget Akka.FSharp\r",
+			"nuget FsPickler 2.4.0\r",
+			"\r",
+			"nuget FSharp.Data\r",
+			"nuget FSharp.Data.Toolbox.Twitter\r",
+			"\r",
+			"nuget FsUnit.xUnit\r",
+			"nuget xunit.runner.visualstudio\r",
+			"\r",
+			"source ./nugetfeed\r",
+			"nuget FSharpTalk.Logging\r",
+			"nuget WindowsNotifications\r",
+			"\r",
+			"group Build\r",
+			"    redirects: off\r",
+			"    source https://nuget.org/api/v2\r",
+			"\r",
+			"    nuget FAKE"
+		],
+		"description": "All Paket Dependencies"
+	}
+}
