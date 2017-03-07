@@ -17,15 +17,9 @@
 		],
 		"description": "Add Paket Build Group"
 	},
-	"All Paket Dependencies": {
+	"The Rest": {
 		"prefix": "talk",
 		"body": [
-			"framework: auto-detect\r",
-			"redirects: on\r",
-			"source https://www.nuget.org/api/v2\r",
-			"\r",
-			"nuget FSharp.Core\r",
-			"\r",
 			"nuget Serilog\r",
 			"nuget Serilog.Sinks.Seq\r",
 			"nuget Serilog.Sinks.ColoredConsole\r",
@@ -37,12 +31,45 @@
 			"nuget FSharp.Data\r",
 			"nuget FSharp.Data.Toolbox.Twitter\r",
 			"\r",
+			"nuget WindowsNotifications\r"
+		],
+		"description": "All Paket Dependencies"
+	},
+	"Testing": {
+		"prefix": "talk",
+		"body": [
+			"nuget FsUnit.xUnit\r",
+			"nuget xunit.runner.visualstudio\r"
+		],
+		"description": "Testing Dependencies"
+	},
+				
+	"All Paket Dependencies": {
+		"prefix": "talk",
+		"body": [
+			"framework: auto-detect\r",
+			"redirects: on\r",
+			"source https://www.nuget.org/api/v2\r",
+			"\r",
+			"nuget FSharp.Core 4.0\r",
+			"\r",
+			"nuget Serilog\r",
+			"nuget Serilog.Sinks.Seq\r",
+			"nuget Serilog.Sinks.ColoredConsole\r",
+			"\r",
+			"nuget Akka\r",
+			"nuget Akka.FSharp\r",
+			"nuget FsPickler 2.4.0\r",
+			"\r",
+			"nuget FSharp.Data\r",
+			"nuget FSharp.Data.Toolbox.Twitter\r",
+			"nuget WindowsNotifications\r",
+			"\r",
 			"nuget FsUnit.xUnit\r",
 			"nuget xunit.runner.visualstudio\r",
 			"\r",
 			"source ./nugetfeed\r",
 			"nuget FSharpTalk.Logging\r",
-			"nuget WindowsNotifications\r",
 			"\r",
 			"group Build\r",
 			"    redirects: off\r",

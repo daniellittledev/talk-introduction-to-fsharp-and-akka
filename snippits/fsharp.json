@@ -38,29 +38,17 @@
 	"Script Include #r Serilog": {
 		"prefix": "talk",
 		"body": [
-			"..\\..\\packages\\Serilog\\lib\\net45\\Serilog.dll"
-		],
-		"description": "Script Include #r Serilog"
-	},
-	"Create Load Keys Function": {
-		"prefix": "talk",
-		"body": [
-			"let loadKeys () =",
-			"    let lines = System.IO.File.ReadLines(\"C:\\Projects\\twitterCreds.txt\") |> Seq.toArray",
-			"    {",
-			"        Key = lines.[0].Trim();",
-			"        Secret = lines.[1].Trim();",
-			"    }"
+			"#r @\"..\\..\\packages\\Serilog\\lib\\net45\\Serilog.dll\""
 		],
 		"description": "Script Include #r Serilog"
 	},
 	"Create Schedule Function": {
 		"prefix": "talk",
 		"body": [
-			"    let schedule (system: ActorSystem) actor message =\r",
-			"        system\r",
-			"            .Scheduler\r",
-			"            .ScheduleTellRepeatedly(TimeSpan.FromSeconds(0.0), TimeSpan.FromSeconds(5.0), actor, message);"
+			"let schedule (system: ActorSystem) actor message =\r",
+			"    system\r",
+			"        .Scheduler\r",
+			"        .ScheduleTellRepeatedly(TimeSpan.FromSeconds(0.0), TimeSpan.FromSeconds(5.0), actor, message);"
 		],
 		"description": "Creates a function to schedule messages for actors"
 	},
@@ -81,17 +69,17 @@
 	"Create Log With Function": {
 		"prefix": "talk",
 		"body": [
-			"    let logWith (log: ILogger) (propertyName:string) (value:obj) =\r",
-			"        log.ForContext(propertyName, value)"
+			"let logWith (log: ILogger) (propertyName:string) (value:obj) =\r",
+			"    log.ForContext(propertyName, value)"
 		],
 		"description": "Creates new logger with extra property on all messages"
 	},
-	"Create Seq Logger": {
+	"Create Seq Logger Serilog": {
 		"prefix": "talk",
 		"body": [
 			"LoggerConfiguration()\r",
-			"                .WriteTo.Seq(\"http://localhost:5341\")\r",
-			"                .CreateLogger()"
+			"    .WriteTo.Seq(\"http://localhost:5341\")\r",
+			"    .CreateLogger()"
 		],
 		"description": "Create Seq Logger"
 	},
@@ -102,21 +90,21 @@
 		],
 		"description": "Create actor system"
 	},
-	"Wait for system shutdown": {
+	"Wait for system shutdown or terminated": {
 		"prefix": "talk",
 		"body": [
-			"        system.WhenTerminated\r",
-			"            |> Async.AwaitTask\r",
-			"            |> Async.RunSynchronously"
+			"system.WhenTerminated\r",
+			"    |> Async.AwaitTask\r",
+			"    |> Async.RunSynchronously"
 		],
 		"description": "Wait for system shutdown"
 	},
 	"Add Supervisor Stategy": {
 		"prefix": "talk",
 		"body": [
-			"            [\r",
-			"                SpawnOption.SupervisorStrategy (Strategy.OneForOne (fun error -> Directive.Restart))\r",
-			"            ]"
+			"[\r",
+			"    SpawnOption.SupervisorStrategy (Strategy.OneForOne (fun error -> Directive.Restart))\r",
+			"]"
 		],
 		"description": "Add supervisor Strategy"
 	},
@@ -141,108 +129,35 @@
 		],
 		"description": "Terminate Actor System"
 	},
-	"Add FAKE openings": {
-		"prefix": "talk-fake",
+	"Add open": {
+		"prefix": "talk",
 		"body": [
-			"#r \"./packages/build/FAKE/tools/FakeLib.dll\"\r",
+			"open Akka\r",
+			"open Akka.Actor\r",
+			"open Akka.FSharp\r",
+			"open System\r",
+			"open Serilog\r",
+			"open LoggingHelpers\r",
+			"open FSharp.Data.Toolbox.Twitter"
+		],
+		"description": "Add open statements for twitter app"
+	},
+	"Twitter Creds": {
+		"prefix": "talk",
+		"body": [
+			"type TwitterCreds = \r",
+			"    {\r",
+			"        Key: string;\r",
+			"        Secret: string;\r",
+			"    }\r",
 			"\r",
-			"open Fake\r",
-			"open Fake.FileUtils\r",
-			"open Fake.EnvironmentHelper\r",
-			"open Fake.AssemblyInfoFile\r",
-			"open System"
+			"let loadKeys () =\r",
+			"    let lines = System.IO.File.ReadLines(@\"C:\\\\Projects\\\\twitterCreds.txt\") |> Seq.toArray\r",
+			"    {\r",
+			"        Key = lines.[0].Trim();\r",
+			"        Secret = lines.[1].Trim();\r",
+			"    }"
 		],
-		"description": "Add FAKE open-ings"
-	},
-	"Get version from Paket Template": {
-		"prefix": "talk-fake",
-		"body": [
-			"StringHelper.ReadFile templatePath\r",
-			"    |> Seq.where (fun line -> line.StartsWith(\"Version\"))\r",
-			"    |> Seq.map (fun line -> line.Replace(\"Version\", \"\").Trim())\r",
-			"    |> Seq.exactlyOne"
-		],
-		"description": "Get version from Paket Template"
-	},
-	"Get project info": {
-		"prefix": "talk-fake",
-		"body": [
-			"projectsToPackage\r",
-			"    |> Seq.map (fun templatePath -> \r",
-			"        let dir = (directoryInfo templatePath).Parent\r",
-			"        let projFile = filesInDirMatching \"*.*proj\" dir |> Seq.exactlyOne\r",
-			"        {\r",
-			"            Name = projFile.Name;\r",
-			"            Directory = dir;\r",
-			"            Version = getVersionFromTemplate templatePath;\r",
-			"            TemplatePath = templatePath\r",
-			"        })"
-		],
-		"description": "Get project info"
-	},
-	"Create FSharp Assembly Info": {
-		"prefix": "talk-fake",
-		"body": [
-			"CreateFSharpAssemblyInfo (project.Directory.FullName @@ \"AssemblyVersionInfo.fs\")\r",
-			"            [\r",
-			"                Attribute.Version project.Version;\r",
-			"                Attribute.FileVersion project.Version\r",
-			"            ]"
-		],
-		"description": "Create FSharp Assembly Info"
-	},
-	"Paket Pack": {
-		"prefix": "talk-fake",
-		"body": [
-			"Paket.Pack (fun p -> \r",
-			"            { p with\r",
-			"                BuildConfig = buildConfig;\r",
-			"                Version = project.Version;\r",
-			"                TemplateFile = project.TemplatePath;\r",
-			"                WorkingDir = artifacts;\r",
-			"                OutputPath = \".\";\r",
-			"                IncludeReferencedProjects = true;\r",
-			"                BuildPlatform = \"AnyCPU\"\r",
-			"            }\r",
-			"        )"
-		],
-		"description": "Paket Pack"
-	},
-	"undefined": {
-		"body": [
-			"for executable in executables do\r",
-			"        logfn \"Running: %s\" executable\r",
-			"        System.Diagnostics.Process.Start(executable, \"\") |> ignore"
-		]
-	},
-	"Run executables": {
-		"prefix": "talk-fake",
-		"body": [
-			"    for executable in executables do\r",
-			"        logfn \"Running: %s\" executable\r",
-			"        System.Diagnostics.Process.Start(executable, \"\") |> ignore"
-		],
-		"description": "Run executables"
-	},
-	"Build Order": {
-		"prefix": "talk-fake",
-		"body": [
-			"// Build order\r",
-			"\"Clean\"   ?=> \"Build\"\r",
-			"\"Version\" ?=> \"Build\"\r",
-			"\"Test\"    <== [ \"Build\" ]\r",
-			"\"Package\" <== [ \"Version\"; \"Build\"; ]\r",
-			"\"Run\" <== [ \"Version\"; \"Build\"; \"Test\" ]\r",
-			"\r",
-			"RunTargetOrDefault \"Build\""
-		],
-		"description": "Build Order"
-	},
-	"MSBuild": {
-		"prefix": "talk-fake",
-		"body": [
-			"MSBuild null \"Build\" [\"Configuration\", buildConfig] appReferences |> Log \"AppBuild-Output: \""
-		],
-		"description": "MSBuild"
+		"description": "Twitter Creds"
 	}
 }
